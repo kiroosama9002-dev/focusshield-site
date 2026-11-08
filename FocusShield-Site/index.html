@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FocusShield</title>
+<meta name="description" content="A Pomodoro timer that actually blocks distractions on your PC, your browser and your phone, and keeps all three in sync.">
+<link rel="icon" href="img/p-timer.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050a0f;--bg2:#0a141b;--panel:#0d1a22;--line:#183039;--text:#eaf4f1;--mute:#8fa8a8;--acc:#34d399;--acc2:#2dd4bf;--on:#03130e;--r:18px;
+--head:'Sora',system-ui,sans-serif;--body:'Plus Jakarta Sans',system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;color-scheme:dark}
+body{margin:0;background:radial-gradient(900px 500px at 85% -5%,rgba(52,211,153,.13),transparent 60%),var(--bg);color:var(--text);font:16px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}a{color:inherit}
+.w{max-width:1120px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}
+h1,h2,h3{font-family:var(--head);line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:clamp(26px,4vw,38px)}h3{font-size:18px}
+p{margin:0}.mute{color:var(--mute)}
+nav{display:flex;align-items:center;justify-content:space-between;padding-block:20px;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font:800 18px var(--head);text-decoration:none}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:grid;place-items:center;color:var(--on)}
+nav .links{display:flex;gap:22px;font-size:14px;color:var(--mute)}nav .links a{text-decoration:none}nav .links a:hover{color:var(--text)}
+.hero{padding-block:48px 28px;display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}
+.hero h1{font-size:clamp(36px,6vw,62px);font-weight:800}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:18px;font-size:18px;color:var(--mute);max-width:520px}
+.dl{display:grid;gap:12px;margin-top:28px;max-width:520px}
+.btn{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:14px;text-decoration:none;border:1px solid var(--line);background:var(--panel);transition:transform .2s,border-color .2s}
+.btn:hover{transform:translateY(-2px);border-color:var(--acc)}
+.btn.main{background:linear-gradient(135deg,var(--acc),var(--acc2));color:var(--on);border:0}
+.btn svg{width:26px;height:26px;flex:0 0 auto}
+.btn b{display:block;font:700 16px var(--head)}.btn small{display:block;font-size:12.5px;opacity:.75}
+.btn .sz{margin-left:auto;font-size:12.5px;opacity:.7;white-space:nowrap}
+.shot{border-radius:16px;border:1px solid var(--line);box-shadow:0 30px 70px -28px rgba(0,0,0,.9)}
+.hero-img{position:relative}
+.hero-phone{position:absolute;right:-8px;bottom:-30px;width:31%;border-radius:20px;border:3px solid #0b1a22;box-shadow:0 24px 50px -10px #000}
+section{padding-block:68px}
+.sec-head{max-width:640px;margin-bottom:34px}.sec-head p{margin-top:12px;color:var(--mute)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:14px;background:var(--bg2);border:1px solid var(--line)}
+.seg button{font:600 14px var(--body);color:var(--mute);background:none;border:0;padding:9px 16px;border-radius:10px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--acc);color:var(--on)}
+.stage{margin-top:22px}.stage img{width:100%}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.phones{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:34px}
+.phones img{border-radius:20px;border:1px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;counter-increment:s}
+.step::before{content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--acc);color:var(--on);font:800 15px var(--head);margin-bottom:14px}
+.step p{margin-top:8px;color:var(--mute);font-size:14.5px}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.f{padding:22px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);min-width:0}
+.f p{margin-top:8px;color:var(--mute);font-size:14.5px}
+.f .t{display:inline-block;margin-bottom:12px;font:700 11px var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--acc)}
+.sw{display:flex;gap:6px;margin-top:12px}.sw i{width:16px;height:16px;border-radius:50%;display:block}
+.guides{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g{padding:24px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);min-width:0}
+.g ol{margin:14px 0 0;padding-left:20px;color:var(--mute);font-size:14.5px}.g li{margin-bottom:8px}.g li b{color:var(--text)}
+code{font:13px ui-monospace,Menlo,Consolas,monospace;background:var(--bg2);border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--acc2)}
+details{border-top:1px solid var(--line);padding:18px 0}details:last-child{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font:700 16px var(--head);list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:'+';color:var(--acc);font-size:22px;line-height:1}details[open] summary::after{content:'–'}
+details p{margin-top:10px;color:var(--mute);max-width:760px}
+footer{padding-block:40px 60px;color:var(--mute);font-size:13.5px;border-top:1px solid var(--line)}
+.note{margin-top:14px;font-size:13px;color:var(--mute);max-width:520px}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.hero-phone{right:8px;bottom:-24px}.steps,.phones{grid-template-columns:repeat(2,1fr)}.feat,.guides{grid-template-columns:1fr}nav .links{display:none}}
+@media(max-width:480px){.phones{grid-template-columns:1fr 1fr;gap:10px}.steps{grid-template-columns:1fr}.btn .sz{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="w">
+<nav>
+  <a class="brand" href="#top"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>FocusShield</a>
+  <div class="links"><a href="#themes">Themes</a><a href="#how">How it works</a><a href="#features">Features</a><a href="#install">Install</a><a href="#faq">FAQ</a></div>
+</nav>
+
+<header class="hero" id="top">
+  <div>
+    <h1>Focus is easier when the <em>distractions can't open</em>.</h1>
+    <p class="lead">FocusShield is a Pomodoro timer that closes the apps and websites you choose while you work. It runs on your PC, in Chrome or Brave, and on your Android phone, all connected.</p>
+    <div class="dl">
+      <a class="btn main" id="dl-apk" href="FocusShield.apk" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg>
+        <span><b>Download for Android</b><small>APK · Android 7 or newer</small></span><span class="sz">0.7 MB</span></a>
+      <a class="btn" id="dl-win" href="#install">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span><b>Download for Windows</b><small>ZIP · Windows 10 or 11, 64-bit</small></span><span class="sz">~160 MB</span></a>
+      <a class="btn" id="dl-ext" href="FocusShield-Extension.zip" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h4v4a2 2 0 0 0 2 2h4v4h-4a2 2 0 0 0-2 2v4h-4v-4a2 2 0 0 0-2-2H4V9h4a2 2 0 0 0 2-2z"/></svg>
+        <span><b>Browser extension</b><small>Chrome, Brave, Edge</small></span><span class="sz">65 KB</span></a>
+    </div>
+    <p class="note">Free. No account needed. Your tasks and activity stay on your own devices.</p>
+  </div>
+  <div class="hero-img">
+    <img class="shot" src="img/d-aurora-timer.jpg" alt="FocusShield timer in the Aurora theme, focusing on a thesis chapter" width="1360" height="860">
+    <img class="hero-phone" src="img/p-tasks.jpg" alt="FocusShield tasks on an Android phone" width="540" height="1108">
+  </div>
+</header>
+</div>
+
+<section id="themes"><div class="w">
+  <div class="sec-head"><h2>One app, four looks</h2><p>Each theme changes the layout, the colors and the feel of the whole app, not just the accent. The phone app has the same four.</p></div>
+  <div class="row">
+    <div class="seg" id="seg-theme" role="group" aria-label="Theme">
+      <button aria-pressed="true" data-v="shield">Shield</button><button aria-pressed="false" data-v="ember">Ember</button><button aria-pressed="false" data-v="sprint">Sprint</button><button aria-pressed="false" data-v="aurora">Aurora</button>
+    </div>
+    <div class="seg" id="seg-view" role="group" aria-label="Screen">
+      <button aria-pressed="true" data-v="timer">Timer</button><button aria-pressed="false" data-v="tasks">Tasks</button>
+    </div>
+  </div>
+  <div class="stage"><img class="shot" id="stage" src="img/d-shield-timer.jpg" alt="FocusShield, Shield theme, Timer screen" width="1360" height="860"></div>
+  <div class="phones">
+    <img src="img/p-timer.jpg" alt="Phone: timer with a task selected" width="540" height="1108" loading="lazy">
+    <img src="img/p-tasks.jpg" alt="Phone: colored tasks" width="540" height="1108" loading="lazy">
+    <img src="img/p-activity.jpg" alt="Phone: time per task" width="540" height="1108" loading="lazy">
+    <img src="img/p-block.jpg" alt="Phone: blocklist" width="540" height="1108" loading="lazy">
+  </div>
+</div></section>
+
+<section id="how"><div class="w">
+  <div class="sec-head"><h2>How it works</h2><p>Install on the PC first. The extension and the phone connect to it, so they all share one timer and one blocklist.</p></div>
+  <div class="steps">
+    <div class="step"><h3>Set up the PC app</h3><p>Open FocusShield, choose a PIN, and add the apps and sites you want blocked while you work.</p></div>
+    <div class="step"><h3>Start a session</h3><p>Pick a task, press Start. Blocked apps close and blocked sites redirect for the whole session.</p></div>
+    <div class="step"><h3>Add browser and phone</h3><p>The extension finds the PC app on its own. The phone pairs once with a QR code from the PC and then works from any network.</p></div>
+    <div class="step"><h3>See where time went</h3><p>Activity shows focus hours, time per task, apps and websites, with a daily score and streak.</p></div>
+  </div>
+</div></section>
+
+<section id="features"><div class="w">
+  <div class="sec-head"><h2>What it does</h2></div>
+  <div class="feat">
+    <div class="f"><span class="t">Timer</span><h3>Real Pomodoro cycle</h3><p>Four focus sessions, a short break between each, a long break after the fourth. Skipping a break earns bonus points.</p></div>
+    <div class="f"><span class="t">Blocking</span><h3>Apps and sites that stay closed</h3><p>Block programs on the PC, websites in the browser and apps on the phone. Or switch to allow-only mode where every site is closed except the ones you list.</p></div>
+    <div class="f"><span class="t">Security</span><h3>You can't just cancel it</h3><p>Pausing, resetting or loosening the blocklist during focus asks for your PIN or Windows Hello. Strict mode locks it down further.</p></div>
+    <div class="f"><span class="t">Tasks</span><h3>Tasks, sub-tasks and points</h3><p>Break tasks into steps. Finish them all and the task completes and scores points. Pin any task as a floating glass or paper sticky note.</p>
+      <div class="sw"><i style="background:#f43f5e"></i><i style="background:#fb923c"></i><i style="background:#fbbf24"></i><i style="background:#34d399"></i><i style="background:#2dd4bf"></i><i style="background:#60a5fa"></i><i style="background:#818cf8"></i><i style="background:#c084fc"></i><i style="background:#f472b6"></i></div></div>
+    <div class="f"><span class="t">Focus on a task</span><h3>Know what took your time</h3><p>Select a task and start a session. Every focus minute is added to it, and Activity shows time per task.</p></div>
+    <div class="f"><span class="t">Activity</span><h3>Flow, apps and websites</h3><p>Hourly focus chart, weekly Pomodoros and score, top apps and top websites, plus a daily goal and streak.</p></div>
+    <div class="f"><span class="t">Phone</span><h3>Connected to your computer</h3><p>The Android app shows the same timer, tasks and settings. Start on one device and it runs on both. It closes the phone apps you chose.</p></div>
+    <div class="f"><span class="t">Music</span><h3>Spotify during focus</h3><p>Connect Spotify (Premium) and a focus playlist starts with your session and pauses on breaks.</p></div>
+    <div class="f"><span class="t">Users</span><h3>One app, several people</h3><p>Each user has their own tasks, progress, activity and settings on the same computer.</p></div>
+  </div>
+</div></section>
+
+<section id="install"><div class="w">
+  <div class="sec-head"><h2>Install</h2><p>Three downloads. Start with Windows, then add the others.</p></div>
+  <div class="guides">
+    <div class="g"><h3>Windows</h3>
+      <ol>
+        <li><b>Download</b> the Windows ZIP below and extract it anywhere (right-click → Extract All).</li>
+        <li>Open the extracted folder and double-click <code>FocusShield.exe</code>.</li>
+        <li>If Windows shows "Windows protected your PC", click <b>More info → Run anyway</b>. The app isn't code-signed yet.</li>
+        <li>Create your PIN. Closing the window keeps it running in the system tray.</li>
+      </ol>
+      <p style="margin-top:16px"><a class="btn main" id="dl-win2" href="#install"><span><b>Download for Windows</b><small>ZIP · 64-bit</small></span><span class="sz">~160 MB</span></a></p>
+    </div>
+    <div class="g"><h3>Android</h3>
+      <ol>
+        <li><b>Download</b> the APK on your phone and tap it.</li>
+        <li>Allow installs from your browser or Files app when Android asks, then tap <b>Install</b>. If Play Protect warns, tap <b>Install anyway</b>.</li>
+        <li>Open the app. Choose <b>Use on this phone</b> to use it alone, or <b>Connect to my computer</b>.</li>
+        <li>To link it: on the PC open <b>Settings → Phone companion</b>, turn on <b>Enable phone sync</b>, then in the phone app tap <b>Scan QR</b> and point it at the PC screen (or paste the link or code). It works on any Wi-Fi or mobile data.</li>
+        <li>In <b>Blocklist</b> choose the phone apps, tap <b>Turn on blocking access</b> and enable FocusShield in Accessibility.</li>
+      </ol>
+      <p style="margin-top:16px"><a class="btn main" href="FocusShield.apk" download><span><b>Download APK</b><small>Android 7+</small></span><span class="sz">0.7 MB</span></a></p>
+    </div>
+    <div class="g"><h3>Browser extension</h3>
+      <ol>
+        <li><b>Download</b> the ZIP and extract it into a folder.</li>
+        <li>Open <code>chrome://extensions</code> (Brave: <code>brave://extensions</code>) and turn on <b>Developer mode</b>.</li>
+        <li>Click <b>Load unpacked</b> and choose the extracted folder.</li>
+        <li>Pin FocusShield to the toolbar. With the PC app running it connects by itself.</li>
+      </ol>
+      <p style="margin-top:16px"><a class="btn main" href="FocusShield-Extension.zip" download><span><b>Download extension</b><small>Chrome, Brave, Edge</small></span><span class="sz">65 KB</span></a></p>
+    </div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="w" style="max-width:820px">
+  <div class="sec-head"><h2>Questions</h2></div>
+  <details><summary>Is it safe? Why the warnings?</summary><p>The Windows app and the APK are not signed with a paid certificate, so Windows SmartScreen and Android Play Protect show a warning for any new, unsigned app. Choose "Run anyway" or "Install anyway" if you trust the source you got it from.</p></details>
+  <details><summary>Does it send my data anywhere?</summary><p>No account. Tasks and activity are stored on your PC. When you link a phone from another network, the messages pass through a public relay, fully encrypted with a key made from your pairing code, so the relay cannot read them. The browser extension talks directly to your PC. Spotify is the only other outside connection, and only if you connect it.</p></details>
+  <details><summary>Can the phone work without the PC?</summary><p>Yes. Choose "Use on this phone" and it runs alone with its own tasks, points and app blocking. You can link it to a PC later in Settings.</p></details>
+  <details><summary>Can phone blocking be turned off?</summary><p>Yes. It uses Android's Accessibility service, and anyone can switch it off in system settings. It is a strong nudge, not a lock. The PC app has the PIN protection.</p></details>
+  <details><summary>The phone can't find my PC.</summary><p>Make sure FocusShield is open on the PC with Phone companion turned on, and that both devices have internet. If you changed the pairing code on the PC, scan the new QR code.</p></details>
+  <details><summary>Which phones work?</summary><p>Android 7.0 or newer. There is no iPhone version.</p></details>
+</div></section>
+
+<footer><div class="w">FocusShield · Free to use and share. Your focus stays yours.</div></footer>
+
+<script>
+(function(){
+  var shots={theme:'shield',view:'timer'};
+  var img=document.getElementById('stage');
+  var names={shield:'Shield',ember:'Ember',sprint:'Sprint',aurora:'Aurora'};
+  function show(){img.src='img/d-'+shots.theme+'-'+shots.view+'.jpg';img.alt='FocusShield, '+names[shots.theme]+' theme, '+(shots.view==='timer'?'Timer':'Tasks')+' screen';}
+  function wire(id,key){var g=document.getElementById(id);g.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;shots[key]=b.dataset.v;g.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});show();});}
+  wire('seg-theme','theme');wire('seg-view','view');
+  // Windows build is too big for the site itself: it is attached to a GitHub Release of the same repository.
+  var WIN_FILE='FocusShield-Windows-x64.zip';
+  var WINDOWS_URL=''; // optional: set a full link here to override the automatic one
+  function auto(){
+    if(WINDOWS_URL)return WINDOWS_URL;
+    var h=location.hostname,p=location.pathname.split('/')[1];
+    if(/\.github\.io$/.test(h)&&p)return 'https://github.com/'+h.split('.')[0]+'/'+p+'/releases/latest/download/'+WIN_FILE;
+    return '';
+  }
+  var u=auto();
+  ['dl-win','dl-win2'].forEach(function(id){var a=document.getElementById(id);if(u){a.href=u;}});
+})();
+</script>
+</body>
+</html>
